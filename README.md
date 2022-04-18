@@ -22,7 +22,7 @@ export function authorizeAccount(): boolean {
 }
 ```
 while  the dequeLengthLimiter() function should be modified as :
-
+```ts
 export function dequeLengthLimiter(dequeName: PersistentDeque<u32>): void {
   if (dequeName.length >= 3) {
     dequeName.popFront()
