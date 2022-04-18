@@ -1,6 +1,9 @@
 # profit-maximizer
 Profit-maximizer is a smart contract designed to maximize profit for organizations sharing a common price policy. The scope of such organisations involve the ones that have bidirectional sales  relationship where the customers can sell to as well as buying from the organisation. Example of such organisations are precious metals companies and currency excange offices.  The contract allows such organisations to provide their recent buy and sell information. After the information is collected, the contract can be called with a reference buy and sell price. Once the contract receives the reference buy and sell price from one of the members, the contract will return an array involving a suggested buy price and a suggested sell price. The suggested buy and sell price is created by shift the standard profit margin back and forth between buy and sell region depending of the recent trend that was provided to the contract by the organisations authorised by the contract.
 
+The contract utilizes important features of NEAR protocol such as Storage, Context, Persistent collections and Assert statements. Namely, the contract uses two seperate ‘PersistentDeque’ s in order to save buy and sell stats in the blockcain. ‘pushBack()’ method of the NEAR ‘PersistentDeque’ is used to add new buy or sell information to the ends of the deques while ‘popFront()’ method is used to delete the oldest information from the front.  Assert statements are also used to allow only authorized accounts to provide and receive information under certain conditions while Context.sender property is used to store and detect the accounts interacting with the contract.
+
+
 ## Contract
 ```ts
  import { PersistentDeque, Context } from "near-sdk-as";
@@ -22,7 +25,7 @@ Profit-maximizer is a smart contract designed to maximize profit for organizatio
 
 //allows certaim number of  elements in the PersistentDeque and removes one from the front if there are more.
 export function dequeLengthLimiter(dequeName: PersistentDeque<u32>): void {
-  if (dequeName.length > 2) {
+  if (dequeName.length >= 2) {
     dequeName.popFront()
   }
 }
