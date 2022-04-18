@@ -6,11 +6,11 @@ The contract utilizes important features of NEAR protocol such as Storage, Conte
 ### Before Development
 Before building and deploying the contract, there are few adjustments that should be done on the index.ts file located in /src/simple/assembly/index.ts :
 
-1- All the accounts that will call the contract should be added to the authorizeAccount() function as Context.sender == “<account id>” seperated by ‘| |’ symbol.  
+**1**- All the accounts that will call the contract should be added to the authorizeAccount() function as Context.sender == “<account id>” seperated by ‘| |’ symbol.  
 
-2-  (dequeName.Length >=2) part of the dequeLengthLimiter() function should be modified depending on the number of accounts placed in the authorizeAccount() function. Namely, length of the ‘PersistentDeque’ s should be as long as the number of accounts authourized to call the contract.
+**2**-  (dequeName.Length >=2) part of the dequeLengthLimiter() function should be modified depending on the number of accounts placed in the authorizeAccount() function. Namely, length of the ‘PersistentDeque’ s should be as long as the number of accounts authourized to call the contract.
 
-For example: In a scenario where the contract will be used by three accounts:
+**For example:** In a scenario where the contract will be used by three accounts:
 testone.testnet, testtwo.testnet and testthree.testnet. The authorizeAccount() function should be modified as :
 ```ts
 export function authorizeAccount(): boolean {
@@ -31,6 +31,20 @@ export function dequeLengthLimiter(dequeName: PersistentDeque<u32>): void {
 ```
 
 ### Development
+  
+To deploy the contract for development, follow these steps:
+
+1. clone this repo locally
+2. run `yarn` to install dependencies
+3. run `./scripts/1.dev-deploy.sh` to deploy the contract (this uses `near dev-deploy`)
+
+**Your contract is now ready to use.**
+
+To use the contract you can do any of the following:
+Provide numbers of items bought and sold to the contract from each account: 
+
+"near call dev-<account number> --accountId <Your Account Number> collectMyBoughtSoldNums '{boughtNum:<Your u32 number here>,soldNum:<Your u32 number here>}'"
+  
 
 
 ## Contract
@@ -82,7 +96,8 @@ export function calculateProfitMaximizingCoefficient(): f32 {
 export function getSuggestedBuyAndSellPrice(referenceBuyPrice: u32, referenceSellPrice: u32  ): Array<u32> {
   assert(authorizeAccount(), "You are not authorized to get suggested buy and sell price")
   /*The function aims to return suggested buy and sell price via the array below,
-  suggestedBuyAndSellPrice[0] will be the suggested buy-price while suggestedBuyAndSellPrice[1] will be the suggested sell-price*/
+  suggestedBuyAndSellPrice[0] will be the suggested buy-price while suggestedBuyAndSellPrice[1] will
+  be the suggested sell-price*/
   let suggestedBuyAndSellPrice = new Array<u32>(2);
   //standard profit can be manipulated by changing the value of standardProfit 
   const standardProfit: u32 = 10;
@@ -90,9 +105,9 @@ export function getSuggestedBuyAndSellPrice(referenceBuyPrice: u32, referenceSel
   const standardSellPrice:u32 = referenceSellPrice + standardProfit;
   let coefficientNum: f32 = calculateProfitMaximizingCoefficient();
   
-   /*(coefficientNum>1) is the case where members bought more than they sold. Hence, the suggested price decreases the standard sell price
-   by the amount of coefficientNum to profit more. It also decreases the suggested buy price
-   in order to keep the margin unchanged */
+   /*(coefficientNum>1) is the case where members bought more than they sold. Hence, the suggested price 
+   decreases the standard sell price by the amount of coefficientNum to profit more. It also decreases 
+   the suggested buy price in order to keep the margin unchanged */
    if (coefficientNum > 1) {
     suggestedBuyAndSellPrice[0]=  standardBuyPrice - (coefficientNum as u32)
     suggestedBuyAndSellPrice[1]=  standardSellPrice - (coefficientNum as u32)
@@ -103,8 +118,8 @@ export function getSuggestedBuyAndSellPrice(referenceBuyPrice: u32, referenceSel
     suggestedBuyAndSellPrice[0]= standardBuyPrice
     suggestedBuyAndSellPrice[1]= standardSellPrice
    }
-   /*(coefficientNum < 1) is the case where members bought less than they sold from the customers, 10/(coefficientNum*10) allows us 
-   to reverse-divide the elements of calculateProfitMaximizingCoefficient()*/
+   /*(coefficientNum < 1) is the case where members bought less than they sold from the customers, 
+   10/(coefficientNum*10) allows us to reverse-divide the elements of calculateProfitMaximizingCoefficient()*/
    if (coefficientNum < 1) {
     coefficientNum = (10 as f32) / (coefficientNum * (10 as f32))
     /*since members bought less than they sold, the suggested price increases the standard sell price
