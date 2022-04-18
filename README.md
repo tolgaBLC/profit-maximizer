@@ -6,12 +6,12 @@ The contract utilizes important features of NEAR protocol such as Storage, Conte
 ### Before Development
 Before building and deploying the contract, there are few adjustments that should be done on the index.ts file located in /src/simple/assembly/index.ts :
 
-**1**- All the accounts that will call the contract should be added to the authorizeAccount() function as Context.sender == “<account id>” seperated by ‘| |’ symbol.  
+**1**- All the accounts that will call the contract should be added to the `authorizeAccount()` function as `Context.sender == “<account id>”` seperated by ‘| |’ symbol.  
 
-**2**-  (dequeName.Length >=2) part of the dequeLengthLimiter() function should be modified depending on the number of accounts placed in the authorizeAccount() function. Namely, length of the ‘PersistentDeque’ s should be as long as the number of accounts authourized to call the contract.
+**2**-  `(dequeName.Length >=2)` part of the `dequeLengthLimiter()` function should be modified depending on the number of accounts placed in the `authorizeAccount()` function. Namely, length of the ‘PersistentDeque’ s should be as long as the number of accounts authourized to call the contract.
 
 **For example:** In a scenario where the contract will be used by three accounts:
-testone.testnet, testtwo.testnet and testthree.testnet. The authorizeAccount() function should be modified as :
+testone.testnet, testtwo.testnet and testthree.testnet. The `authorizeAccount()` function should be modified as :
 ```ts
 export function authorizeAccount(): boolean {
   return (
@@ -41,11 +41,14 @@ To deploy the contract for development, follow these steps:
 **Your contract is now ready to use.**
 
 To use the contract you can do any of the following:
-Provide numbers of items bought and sold to the contract from each account: 
+
+Provide numbers of items bought and sold to the contract from each account 
 
 `near call dev-<account number> --accountId <Your Account Number> collectMyBoughtSoldNums '{boughtNum:<Your u32 number here>,soldNum:<Your u32 number here>}'`
   
-
+Provide a reference buy price and a reference sell price to the contract in order to get a suggested buy and sell price
+ 
+`near call dev-<account number> --accountId <Your Account Number> getSuggestedBuyAndSellPrice '{referenceBuyPrice:<Your u32 number here>,referenceSellPrice:<Your u32 number here>}'`
 
 ## Contract
 ```ts
