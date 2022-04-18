@@ -1,14 +1,14 @@
 # profit-maximizer
 Profit-maximizer is a smart contract designed to maximize profit for organizations sharing a common price policy. The scope of such organisations involve the ones that have bidirectional sales  relationship where the customers can sell to as well as buying from the organisation. Example of such organisations are precious metals companies and currency excange offices.  The contract allows such organisations to provide their recent buy and sell information. After the information is collected, the contract can be called with a reference buy and sell price. Once the contract receives the reference buy and sell price from one of the members, the contract will return an array involving a suggested buy price and a suggested sell price. The suggested buy and sell price is created by shifting the standard profit margin back and forth between buy and sell region depending of the recent trend that was provided to the contract by the organisations authorised by the contract.
 
-The contract utilizes important features of NEAR protocol such as Storage, Context, Persistent collections and Assert statements. Namely, the contract uses two seperate ‘PersistentDeque’ s in order to save buy and sell stats in the blockcain. ‘pushBack()’ method of the NEAR ‘PersistentDeque’ is used to add new buy or sell information to the ends of the deques while ‘popFront()’ method is used to delete the oldest information from the front.  Assert statements are also used to allow only authorized accounts to provide and receive information under certain conditions while Context.sender property is used to store and detect the accounts interacting with the contract.
+The contract utilizes important features of NEAR protocol such as Storage, Context, Persistent collections and Assert statements. Namely, the contract uses two seperate `PersistentDeque`  in order to save buy and sell stats in the blockcain. `pushBack()` method of the NEAR `PersistentDeque` is used to add new buy or sell information to the ends of the deques while `popFront()` method is used to delete the oldest information from the front.  Assert statements are also used to allow only authorized accounts to provide and receive information under certain conditions while `Context.sender` property is used to store and detect the accounts interacting with the contract.
 ## Usage
 ### Before Development
-Before building and deploying the contract, there are few adjustments that should be done on the index.ts file located in /src/simple/assembly/index.ts :
+Before building and deploying the contract, there are few adjustments that should be done on the `index.ts` file located in `/src/simple/assembly/index.ts` :
 
 **1**- All the accounts that will call the contract should be added to the `authorizeAccount()` function as `Context.sender == “<account id>”` seperated by ‘| |’ symbol.  
 
-**2**-  `(dequeName.Length >=2)` part of the `dequeLengthLimiter()` function should be modified depending on the number of accounts placed in the `authorizeAccount()` function. Namely, length of the ‘PersistentDeque’ s should be as long as the number of accounts authourized to call the contract.
+**2**-  `(dequeName.Length >=2)` part of the `dequeLengthLimiter()` function should be modified depending on the number of accounts placed in the `authorizeAccount()` function. Namely, length of the `PersistentDeque` should be as long as the number of accounts authourized to call the contract.
 
 **For example:** In a scenario where the contract will be used by three accounts:
 testone.testnet, testtwo.testnet and testthree.testnet. The `authorizeAccount()` function should be modified as :
@@ -40,7 +40,7 @@ To deploy the contract for development, follow these steps:
 
 **Your contract is now ready to use.**
 
-To use the contract you can do any of the following:
+To use the contract you can do the following respectively:
 
 Provide numbers of items bought and sold to the contract from each account 
 
