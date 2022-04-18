@@ -14,7 +14,7 @@ export function collectMyBoughtSoldNums(boughtNum: u32, soldNum: u32): string {
 }
 //allows certaim number of  elements in the PersistentDeque and removes one from the front if there are more.
 export function dequeLengthLimiter(dequeName: PersistentDeque<u32>): void {
-  if (dequeName.length > 2) {
+  if (dequeName.length >= 2) {
     dequeName.popFront()
   }
 }
