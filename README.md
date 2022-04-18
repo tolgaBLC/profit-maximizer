@@ -28,6 +28,7 @@ export function dequeLengthLimiter(dequeName: PersistentDeque<u32>): void {
     dequeName.popFront()
   }
 }
+```
 
 ### Development
 
