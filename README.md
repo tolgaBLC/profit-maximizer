@@ -4,6 +4,30 @@ Profit-maximizer is a smart contract designed to maximize profit for organizatio
 The contract utilizes important features of NEAR protocol such as Storage, Context, Persistent collections and Assert statements. Namely, the contract uses two seperate ‘PersistentDeque’ s in order to save buy and sell stats in the blockcain. ‘pushBack()’ method of the NEAR ‘PersistentDeque’ is used to add new buy or sell information to the ends of the deques while ‘popFront()’ method is used to delete the oldest information from the front.  Assert statements are also used to allow only authorized accounts to provide and receive information under certain conditions while Context.sender property is used to store and detect the accounts interacting with the contract.
 ## Usage
 ### Before Development
+Before building and deploying the contract, there are few adjustments that should be done on the index.ts file located in /src/simple/assembly/index.ts :
+
+1- All the accounts that will call the contract should be added to the authorizeAccount() function as Context.sender == “<account id>” seperated by ‘| |’ symbol.  
+
+2-  (dequeName.Length >=2) part of the dequeLengthLimiter() function should be modified depending on the number of accounts placed in the authorizeAccount() function. Namely, length of the ‘PersistentDeque’ s should be as long as the number of accounts authourized to call the contract.
+
+For example: In a scenario where the contract will be used by three accounts:
+testone.testnet, testtwo.testnet and testthree.testnet. The authorizeAccount() function should be modified as :
+```ts
+export function authorizeAccount(): boolean {
+  return (
+    Context.sender == "testone.testnet" ||
+    Context.sender == "testtwo.testnet" ||
+    Context.sender == "testthree.testnet" 
+  );
+}
+```
+while  the dequeLengthLimiter() function should be modified as :
+
+export function dequeLengthLimiter(dequeName: PersistentDeque<u32>): void {
+  if (dequeName.length >= 3) {
+    dequeName.popFront()
+  }
+}
 
 ### Development
 
