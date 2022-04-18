@@ -1,7 +1,7 @@
 import { PersistentDeque, Context } from "near-sdk-as";
 //create 2 persistent deques to store bought items and sold items
-let dequeItemsBought = new PersistentDeque<u32>("hh");
-let dequeItemsSold = new PersistentDeque<u32>("jj");
+let dequeItemsBought = new PersistentDeque<u32>("db");
+let dequeItemsSold = new PersistentDeque<u32>("ds");
 
 //collect the numbers of items bought and sold from a member
 export function collectMyBoughtSoldNums(boughtNum: u32, soldNum: u32): string {
@@ -38,6 +38,7 @@ export function calculateProfitMaximizingCoefficient(): f32 {
 }
 //return an array containing the suggested buy price and the suggested sell price
 export function getSuggestedBuyAndSellPrice(referenceBuyPrice: u32, referenceSellPrice: u32  ): Array<u32> {
+  assert(authorizeAccount(), "You are not authorized to get suggested buy and sell price")
   /*The function aims to return suggested buy and sell price via the array below,
   suggestedBuyAndSellPrice[0] will be the suggested buy-price while suggestedBuyAndSellPrice[1]
   will be the suggested sell-price*/
@@ -76,7 +77,7 @@ export function getSuggestedBuyAndSellPrice(referenceBuyPrice: u32, referenceSel
 //the important functions of the contract can only be called by the following accounts
 export function authorizeAccount(): boolean {
   return (
-    Context.sender == "tolgabalci.testnet" ||
-    Context.sender == "testone.tolgabalci.testnet"
+    Context.sender == "<Your account names here>" ||
+    Context.sender == "<Your account names here>"
   );
 }
