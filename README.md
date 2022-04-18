@@ -43,7 +43,7 @@ To deploy the contract for development, follow these steps:
 To use the contract you can do any of the following:
 Provide numbers of items bought and sold to the contract from each account: 
 
-"near call dev-<account number> --accountId <Your Account Number> collectMyBoughtSoldNums '{boughtNum:<Your u32 number here>,soldNum:<Your u32 number here>}'"
+`near call dev-<account number> --accountId <Your Account Number> collectMyBoughtSoldNums '{boughtNum:<Your u32 number here>,soldNum:<Your u32 number here>}'`
   
 
 
